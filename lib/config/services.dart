@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/movie_videos.dart';
 import '../models/upcoming_movies.dart';
@@ -8,6 +8,12 @@ import '../models/now_playing_movies.dart';
 import '../models/popular_movies.dart';
 
 final String _apiKey = "802b2c4b88ea1183e50e6b285a27696e";
+
+launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  }
+}
 
 Future<NowPlayingMovies> getNowPlayingMovies({int page = 1}) async {
   try {

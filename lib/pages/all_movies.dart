@@ -67,12 +67,12 @@ class _AllMoviesState extends State<AllMovies> {
       );
     } else {
       return Scaffold(
+        backgroundColor: Colors.orange,
         appBar: AppBar(
           title: Text("Movie Browser"),
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: BoxDecoration(color: Colors.orange),
           child: ListView(
             children: <Widget>[
               Text(

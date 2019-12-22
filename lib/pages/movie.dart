@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../config/services.dart';
 import '../config/bloc.dart';
 import '../config/page_state.dart';
 import '../models/movie_videos.dart';
-import './error_page.dart';
 import './loading_page.dart';
+import '../pages/error_page.dart';
 
 class Movie extends StatefulWidget {
   final int movieId;
@@ -49,40 +50,36 @@ class _MovieState extends State<Movie> {
     if (_pageState == PageState.Loading) {
       return LoadingPage();
     } else if (_pageState == PageState.Error) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Movie Browser"),
-        ),
-        body: Center(
-          child: Text("Some Error Occurred"),
-        ),
+      return ErrorPage(
+        onPressed: () {
+          bloc.getMovie(widget.movieId);
+          _pageState = PageState.Loading;
+        },
       );
     } else {
       return Scaffold(
+        backgroundColor: Colors.orange,
         appBar: AppBar(
           title: Text(widget.movieName),
         ),
         body: Container(
-          decoration: BoxDecoration(color: Colors.orange),
           padding: EdgeInsets.symmetric(horizontal: 5.0),
           child: ListView.builder(
             itemCount: movieVideos.results.length,
             itemBuilder: (BuildContext context, int index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    movieVideos.results[index].name,
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
-                  Text(
-                    movieVideos.results[index].type,
-                    style: TextStyle(color: Colors.white, fontSize: 14.0),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                  )
-                ],
+              return ListTile(
+                title: Text(
+                  movieVideos.results[index].name,
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  movieVideos.results[index].type,
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  launchURL("https://www.youtube.com/watch?v=" +
+                      movieVideos.results[index].key);
+                },
               );
             },
           ),
